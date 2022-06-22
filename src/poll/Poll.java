@@ -51,14 +51,14 @@ public interface Poll<C> {
 	 * 
 	 * @param vote 一个投票人对全体候选对象的投票记录集合
 	 */
-	public void addVote(Vote<C> vote,Voter voter) throws NoEnoughCandidateException, InvalidCadidatesException, InvalidVoteException, RepeatCandidateException;
+	public void addVote(Vote<C> vote) throws NoEnoughCandidateException, InvalidCadidatesException, InvalidVoteException, RepeatCandidateException;
 
 	/**
 	 * 按规则计票
-	 * 
+	 *
 	 * @param 所采取的计票规则策略类
 	 */
-	public void statistics(StatisticsStrategy ss);
+	public void statistics(StatisticsStrategy ss) throws CanNotVoteException;
 
 	/**
 	 * 按规则遴选
