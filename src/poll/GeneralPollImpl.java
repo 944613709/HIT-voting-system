@@ -5,6 +5,7 @@ import java.util.*;
 import auxiliary.Voter;
 import pattern.SelectionStrategy;
 import pattern.StatisticsStrategy;
+import vote.VoteItem;
 import vote.VoteType;
 import vote.Vote;
 
@@ -109,17 +110,34 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	 * @param vote 一个投票人对全体候选对象的投票记录集合
 	 */
 	@Override
-	public void addVote(Vote<C> vote) {
-		// 此处应首先检查该选票的合法性并标记，为此需扩展或修改rep
-		
-		for (C candidate : candidates) {
-			if(vote.candidateIncluded(candidate))
-				votes.add()
+	public void addVote(Vote<C> vote) throws NoEnoughCandidateException, InvalidCadidatesException, InvalidVoteException, RepeatCandidateException {
+		// 此处应首先检查该选票的合法性并标记
+		Set<VoteItem<C>> voteItems = vote.getVoteItems();
+		for (VoteItem<C> voteItem : voteItems) {
+			if(!candidates.contains(voteItem))
+				throw new InvalidCadidatesException();
+			if(!voteType.checkLegality(voteItem.getVoteValue()))
+				throw new InvalidVoteException();//一张选票中出现了本次投票不允许的选项值
+			for(VoteItem<C> voteItem2 : voteItems)
+			{
+				if(voteItem2!=voteItem && voteItem2.getCandidate().equals(voteItem.getCandidate()))
+					throw new RepeatCandidateException();//一张选票中有对同一个候选对象的多次投票
+			}
 		}
+
+		for (C candidate : candidates) {
+			if(!vote.candidateIncluded(candidate))
+				throw new NoEnoughCandidateException();//一张选票中没有包含本次投票活动中的所有候选人
+		}
+		//若都无异常
 		votes.add(vote);
 
 	}
-
+	/**
+	 * 按规则计票
+	 *
+	 * @param 所采取的计票规则策略类
+	 */
 	@Override
 	public void statistics(StatisticsStrategy ss) {
 		// 此处应首先检查当前所拥有的选票的合法性
