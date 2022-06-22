@@ -10,13 +10,11 @@ public class RealNameVote<C> extends Vote<C>{
 
 	//Í¶Æ±ÈË
 	private Voter voter;
-	//TODO
-	// //ÂÒÐ´µÄ
-	public RealNameVote(Set<VoteItem<C>> voteItems, Calendar date) {
+	public RealNameVote(Set<VoteItem<C>> voteItems,Calendar date,Voter voter) {
 		super(voteItems,date);
-		// TODO
-	}
+		this.voter=voter;
 
+	}
 	public Voter getVoter() {
 		return this.voter;
 	}

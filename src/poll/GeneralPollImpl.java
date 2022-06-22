@@ -5,6 +5,7 @@ import java.util.*;
 import auxiliary.Voter;
 import pattern.SelectionStrategy;
 import pattern.StatisticsStrategy;
+import pattern.Visitor;
 import vote.VoteItem;
 import vote.VoteType;
 import vote.Vote;
@@ -31,21 +32,23 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	private Map<C, Double> results;
 	//每个voter对应的vote，应该每个voter投且仅投1次
 	private Map<Voter,Integer> votersVoteFrequencies;
+	//记录每个Vote是否合法或者不合法
+	private Map<Vote,Boolean> voteIsLegal;
 	// Rep Invariants
 	//name不能为“”
 	//date不能为null
 	//quantity>0;
-	//且candidates.size()>=1;
-	//需要选出的数量quantity>=candidates.size() =statistics.size() =results.size()
+
+	//需要选出的数量quantity<=candidates.size() =statistics.size()
 
 	//votes的VoteItem的投票候选人，要刚好覆盖到了所有的candidate候选人
 	//votes的VoteItem的投票候选人，不能有其他候选人
 	//votes的VoteItem的value投票选项，不能包含VoteType.options的Keys集合之外的
-	//candidates.size()=statistics.size()=results.size()
+	//candidates.size()=statistics.size()
 
 	//statistics与results的key要刚好覆盖到了所有的candidate候选人
 	//statistics与results的key不能有其他候选人
-	//candidates.size()=statistics.size()=results.size()
+	//candidates.size()=statistics.size()
 
 	// Abstract Function
 	// TODO
@@ -71,6 +74,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 		statistics = new HashMap<>();
 		results = new HashMap<>();
 		votersVoteFrequencies = new HashMap<>();
+		voteIsLegal = new HashMap<>();
 	}
 
 
@@ -81,6 +85,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 		this.date=date;
 		this.voteType=type;
 		this.quantity=quantity;
+		checkRep();
 	}
 
 	/**
@@ -152,6 +157,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 		votersVoteFrequencies.put(voter,votersVoteFrequencies.getOrDefault(voter,0)+1);
 		addVote(vote);
 	}
+
 	//在进行计票之前，还需要检查以下内容，具体在 Poll 的 statistics()方
 	//法中实现：
 	//? 若尚有投票人还未投票，则不能开始计票；
@@ -164,23 +170,18 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	@Override
 	public void statistics(StatisticsStrategy ss) throws CanNotVoteException {
 		//在进行计票之前，还需要检查以下内容，具体在 Poll 的 statistics()方法中实现：
-		//? 若尚有投票人还未投票，则不能开始计票；
-		//? 若一个投票人提交了多次选票，则它们均为非法，计票时不计算在内。
-		// 此处应首先检查当前所拥有的选票的合法性
 
-		////? 若尚有投票人还未投票，则不能开始计票；
+		// 若尚有投票人还未投票，则不能开始计票；
 		if(votersVoteFrequencies.keySet().size()!=voters.size())
 			throw new CanNotVoteException();
 
-		//? 若一个投票人提交了多次选票，则它们均为非法，计票时不计算在内。
+		// 若一个投票人提交了多次选票，则它们均为非法，计票时不计算在内。
 		for (Integer value : votersVoteFrequencies.values()) {
 			if(value!=1)
 				throw new CanNotVoteException();
 		}
-
-		//TODO
-		//按规则计票
-		
+		//让子类继承之后从此处按规则计票
+		ss.statistics(votes,voteType);
 
 	}
 
@@ -193,5 +194,42 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	public String result() {
 		// TODO
 		return null;
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Calendar getDate() {
+		return date;
+	}
+
+	public List<C> getCandidates() {
+		return candidates;
+	}
+
+	public Map<Voter, Double> getVoters() {
+		return voters;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public VoteType getVoteType() {
+		return voteType;
+	}
+
+	public Map<C, Double> getResults() {
+		return results;
+	}
+
+	public Map<Voter, Integer> getVotersVoteFrequencies() {
+		return votersVoteFrequencies;
 	}
 }

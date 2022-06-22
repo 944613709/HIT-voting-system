@@ -7,6 +7,7 @@ import java.util.Map;
 import auxiliary.Voter;
 import pattern.SelectionStrategy;
 import pattern.StatisticsStrategy;
+import pattern.Visitor;
 import vote.Vote;
 import vote.VoteType;
 
@@ -73,4 +74,9 @@ public interface Poll<C> {
 	 * @return 一个表示遴选结果的字符串，每行包含：候选对象ID、排序
 	 */
 	public String result();
+
+	/**
+	 * 扩展访问者visitor模式
+	 */
+	public void accept(Visitor visitor);
 }
