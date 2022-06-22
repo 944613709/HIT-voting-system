@@ -29,7 +29,8 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	protected Map<C, Double> statistics;
 	// 遴选结果，key为候选对象，value为其排序位次
 	private Map<C, Double> results;
-
+	//每个voter对应的vote，应该每个voter投且仅投1次
+	private Map<Voter,Integer> votersVoteFrequencies;
 	// Rep Invariants
 	//name不能为“”
 	//date不能为null
@@ -62,6 +63,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 
 	/**
 	 * 构造函数
+	 * 将candidates和voters和statistics和result初始化空间
 	 */
 	public GeneralPollImpl() {
 		candidates = new ArrayList<>();
@@ -101,6 +103,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 
 	/**
 	 * 接收一个投票人对全体候选对象的投票
+	 * 并且统计每个voter提交投票次数
 	 * 异常情况
 	 * ? 一张选票中没有包含本次投票活动中的所有候选人
 	 * ? 一张选票中包含了不在本次投票活动中的候选人
@@ -110,7 +113,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	 * @param vote 一个投票人对全体候选对象的投票记录集合
 	 */
 	@Override
-	public void addVote(Vote<C> vote) throws NoEnoughCandidateException, InvalidCadidatesException, InvalidVoteException, RepeatCandidateException {
+	public void addVote(Vote<C> vote,Voter voter) throws NoEnoughCandidateException, InvalidCadidatesException, InvalidVoteException, RepeatCandidateException {
 		// 此处应首先检查该选票的合法性并标记
 		Set<VoteItem<C>> voteItems = vote.getVoteItems();
 		for (VoteItem<C> voteItem : voteItems) {
@@ -131,8 +134,13 @@ public class GeneralPollImpl<C> implements Poll<C> {
 		}
 		//若都无异常
 		votes.add(vote);
-
+		votersVoteFrequencies.put(voter,votersVoteFrequencies.getOrDefault(voter,0)+1);
 	}
+
+	//在进行计票之前，还需要检查以下内容，具体在 Poll 的 statistics()方
+	//法中实现：
+	//? 若尚有投票人还未投票，则不能开始计票；
+	//? 若一个投票人提交了多次选票，则它们均为非法，计票时不计算在内。
 	/**
 	 * 按规则计票
 	 *
@@ -140,6 +148,10 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	 */
 	@Override
 	public void statistics(StatisticsStrategy ss) {
+		////在进行计票之前，还需要检查以下内容，具体在 Poll 的 statistics()方
+		//	//法中实现：
+		//	//? 若尚有投票人还未投票，则不能开始计票；
+		//	//? 若一个投票人提交了多次选票，则它们均为非法，计票时不计算在内。
 		// 此处应首先检查当前所拥有的选票的合法性
 		//TODO
 		// TODO此处应首先检查当前所拥有的选票的合法性
