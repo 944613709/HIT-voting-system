@@ -12,7 +12,7 @@ public class VoteItem<C> {
 	private String value;
 
 	// Rep Invariants
-	// 选项名value不能为""，长度不超过5，其中不允许出现空格.
+	// 选项名value不能为""，其中不允许出现空格.
 	// Abstract Function
 	// AF(candidate,value),对应一次投票，投给候选对象candidate票为value.表征了一
 	//个投票人对一个候选对象的具体评价
@@ -26,7 +26,6 @@ public class VoteItem<C> {
 	private void checkRep() {
 		assert !value.equals("");
 		assert !value.contains(" ");
-		assert value.length()<=5;
 	}
 
 	/**

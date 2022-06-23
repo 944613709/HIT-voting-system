@@ -9,7 +9,7 @@ public class VoteType {
 	private Map<String, Integer> options = new HashMap<>();
 
 	// Rep Invariants
-	// 选项名key不能为""，长度不超过5，其中不允许出现空格.
+	// 选项名key不能为""，其中不允许出现空格.
 	// Abstract Function
 	// AF(String,Integer)->选项其中key为选项名、value为选项名对应的分数
 	// Safety from Rep Exposure
@@ -25,7 +25,6 @@ public class VoteType {
 		for (Map.Entry<String, Integer> stringIntegerEntry : options.entrySet()) {
 			String keyStr = stringIntegerEntry.getKey();
 			assert !keyStr.equals("");
-			assert keyStr.length() <= 5;
 			assert !keyStr.contains(" ");
 		}
 	}

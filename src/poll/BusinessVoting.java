@@ -4,6 +4,7 @@ import auxiliary.Proposal;
 import auxiliary.Voter;
 import pattern.SelectionStrategy;
 import pattern.StatisticsStrategy;
+import pattern.Visitor;
 import vote.Vote;
 import vote.VoteType;
 
@@ -60,13 +61,58 @@ public class BusinessVoting extends GeneralPollImpl<Proposal> implements Poll<Pr
     }
 
     @Override
-    public void addVote(Vote<Proposal> vote) throws NoEnoughCandidateException, InvalidCadidatesException, InvalidVoteException, RepeatCandidateException {
-        super.addVote(vote);
+    public void addVote(Vote<Proposal> vote, Voter voter) {
+        super.addVote(vote, voter);
     }
 
     @Override
-    public void voterWithVote_Before_addVote(Vote<Proposal> vote, Voter voter) throws NoEnoughCandidateException, InvalidCadidatesException, InvalidVoteException, RepeatCandidateException {
-        super.voterWithVote_Before_addVote(vote, voter);
+    public void checkVote(Vote<Proposal> vote, Voter voter) {
+        super.checkVote(vote, voter);
+    }
+
+    @Override
+    public VoteType getVoteType() {
+        return super.getVoteType();
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public Calendar getDate() {
+        return super.getDate();
+    }
+
+    @Override
+    public List<Proposal> getCandidates() {
+        return super.getCandidates();
+    }
+
+    @Override
+    public Map<Voter, Double> getVoters() {
+        return super.getVoters();
+    }
+
+    @Override
+    public int getQuantity() {
+        return super.getQuantity();
+    }
+
+    @Override
+    public Map<Proposal, Double> getResults() {
+        return super.getResults();
+    }
+
+    @Override
+    public Map<Voter, Integer> getVotersVoteFrequencies() {
+        return super.getVotersVoteFrequencies();
     }
 
     @Override

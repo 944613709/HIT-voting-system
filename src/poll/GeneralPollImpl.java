@@ -20,20 +20,20 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	private List<C> candidates;
 	// 投票人集合，key为投票人，value为其在本次投票中所占权重
 	private Map<Voter, Double> voters;
-	// 拟选出的候选对象最大数量
-	private int quantity;
+	// 拟选出的候选对象数量
+	protected int quantity;
 	// 本次投票拟采用的投票类型（合法选项及各自对应的分数）
 	private VoteType voteType;
 	// 所有选票集合
-	protected Set<Vote> votes;
+	protected Set<Vote<C>> votes;
 	// 计票结果，key为候选对象，value为其得分
 	protected Map<C, Double> statistics;
 	// 遴选结果，key为候选对象，value为其排序位次
-	private Map<C, Double> results;
+	protected Map<C, Double> results;
 	//每个voter对应的vote，应该每个voter投且仅投1次
-	private Map<Voter,Integer> votersVoteFrequencies;
+	protected Map<Voter,Integer> votersVoteFrequencies;
 	//记录每个Vote是否合法或者不合法
-	private Map<Vote,Boolean> voteIsLegal;
+	protected Map<Vote<C>,Boolean> voteIsLegal;
 	// Rep Invariants
 	//name不能为“”
 	//date不能为null
@@ -108,8 +108,11 @@ public class GeneralPollImpl<C> implements Poll<C> {
 
 
 	/**
-	 * 接收一个投票人对全体候选对象的投票
-	 * 异常情况
+	 * 	 * 接收一个投票人对全体候选对象的投票
+	 * 	  首先检查该选票的合法性并标记
+	 * 	 * 并且统计每个voter提交投票次数
+	 *
+	 * 选票不合法情况
 	 * ? 一张选票中没有包含本次投票活动中的所有候选人
 	 * ? 一张选票中包含了不在本次投票活动中的候选人
 	 * ? 一张选票中出现了本次投票不允许的选项值
@@ -118,44 +121,40 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	 * @param vote 一个投票人对全体候选对象的投票记录集合
 	 */
 	@Override
-	public void addVote(Vote<C> vote) throws NoEnoughCandidateException, InvalidCadidatesException, InvalidVoteException, RepeatCandidateException {
+	public void addVote(Vote<C> vote,Voter voter)  {
 		// 此处应首先检查该选票的合法性并标记
-		Set<VoteItem<C>> voteItems = vote.getVoteItems();
-		for (VoteItem<C> voteItem : voteItems) {
-			if(!candidates.contains(voteItem))
-				throw new InvalidCadidatesException();
-			if(!voteType.checkLegality(voteItem.getVoteValue()))
-				throw new InvalidVoteException();//一张选票中出现了本次投票不允许的选项值
-			for(VoteItem<C> voteItem2 : voteItems)
-			{
-				if(voteItem2!=voteItem && voteItem2.getCandidate().equals(voteItem.getCandidate()))
-					throw new RepeatCandidateException();//一张选票中有对同一个候选对象的多次投票
-			}
-		}
-
-		for (C candidate : candidates) {
-			if(!vote.candidateIncluded(candidate))
-				throw new NoEnoughCandidateException();//一张选票中没有包含本次投票活动中的所有候选人
-		}
-		//若都无异常
+		checkVote(vote,voter);
+		//合法或者不合法都会加入
+		votersVoteFrequencies.put(voter,votersVoteFrequencies.getOrDefault(voter,0)+1);
 		votes.add(vote);
 	}
 
 	/**
-	 * 接收一个投票人对全体候选对象的投票
-	 * 并且统计每个voter提交投票次数
-	 * （必须只能通过这个方法来执行addVote（）方法）
-	 * @param vote
-	 * @param voter
-	 * @throws NoEnoughCandidateException
-	 * @throws InvalidCadidatesException
-	 * @throws InvalidVoteException
-	 * @throws RepeatCandidateException
+	 * 在addVote之前检查该选票合法性并标记
+	 * @param vote 投票
+	 * @param voter 投票人
 	 */
-	public void voterWithVote_Before_addVote(Vote<C> vote,Voter voter) throws NoEnoughCandidateException, InvalidCadidatesException, InvalidVoteException, RepeatCandidateException
+	public void checkVote(Vote<C> vote,Voter voter)
 	{
-		votersVoteFrequencies.put(voter,votersVoteFrequencies.getOrDefault(voter,0)+1);
-		addVote(vote);
+		Set<VoteItem<C>> voteItems = vote.getVoteItems();
+		for (VoteItem<C> voteItem : voteItems) {
+			if(!candidates.contains(voteItem))
+				voteIsLegal.put(vote,false);//包含了不在本次投票活动的候选人
+			if(!voteType.checkLegality(voteItem.getVoteValue()))
+				voteIsLegal.put(vote,false);//一张选票中出现了本次投票不允许的选项值
+			for(VoteItem<C> voteItem2 : voteItems)
+			{
+				if(voteItem2!=voteItem && voteItem2.getCandidate().equals(voteItem.getCandidate()))
+					voteIsLegal.put(vote,false);;//一张选票中有对同一个候选对象的多次投票
+			}
+		}
+		for (C candidate : candidates) {
+			if(!vote.candidateIncluded(candidate))
+				voteIsLegal.put(vote,false);//一张选票中没有包含本次投票活动中的所有候选人
+		}
+		//若都无异常
+		if(voteIsLegal.get(vote)!=false)
+			voteIsLegal.put(vote,true);//鉴定为合法
 	}
 
 	//在进行计票之前，还需要检查以下内容，具体在 Poll 的 statistics()方
@@ -165,7 +164,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	/**
 	 * 按规则计票
 	 *
-	 * @param 所采取的计票规则策略类
+	 * @param ss 所采取的计票规则策略类
 	 */
 	@Override
 	public void statistics(StatisticsStrategy ss) throws CanNotVoteException {
@@ -175,19 +174,19 @@ public class GeneralPollImpl<C> implements Poll<C> {
 		if(votersVoteFrequencies.keySet().size()!=voters.size())
 			throw new CanNotVoteException();
 
-		// 若一个投票人提交了多次选票，则它们均为非法，计票时不计算在内。
-		for (Integer value : votersVoteFrequencies.values()) {
-			if(value!=1)
-				throw new CanNotVoteException();
-		}
+		// 若一个投票人提交了多次选票，则它们均为非法，计票时这个投票人的不计算在内。
+//		for (Integer value : votersVoteFrequencies.values()) {
+//			if(value!=1)
+//				throw new CanNotVoteException();
+//		}
 		//让子类继承之后从此处按规则计票
-		ss.statistics(votes,voteType);
+		statistics = ss.statistics(votes, voteType, votersVoteFrequencies, voteIsLegal);
 
 	}
 
 	@Override
 	public void selection(SelectionStrategy ss) {
-		// TODO
+		results = ss.selection(statistics,quantity);
 	}
 
 	@Override

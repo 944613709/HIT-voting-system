@@ -1,7 +1,9 @@
 package pattern;
 
-public interface SelectionStrategy {
+import java.util.Map;
 
-	// TODO
+public interface SelectionStrategy<C> {
+
+    Map<C, Double> selection(Map<C, Double> statistics,int quantity);
 
 }
