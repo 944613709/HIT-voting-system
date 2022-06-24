@@ -20,7 +20,7 @@ public class Vote<C> {
 	// 所有的数据域都是私有的
 	// 用Collections.unmodifiableSet()转化为不可变类型返回给外部
 	// 使用深拷贝(Calendar) date.clone();
-	//	构造函数传入参数时候防御性拷贝
+	// 构造函数传入参数时候防御性拷贝
 
 	/**
 	 * 检查不变量

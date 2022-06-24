@@ -12,15 +12,41 @@ import java.util.Map;
  */
 class VoteTypeTest {
 
-	// test strategy
-	// TODO
+	// test strategy:
+
+//	  针对VoteType(Map<String,Integer> options)
+//	  1.不存在投票选项
+//	  2.存在投票选项
+//	  2.1Key符合条件
+//	  2.2Key不符合条件
+//
+//	  针对VoteType(String regex)
+//	  测试成功：
+//		1.测试带数字的
+//	  	1.1不含负数
+//	  	1.2含负数
+//	  2.测试不带数字的
+//	  测试抛出异常：
+//	   1，超过5个长度
+//	   2.格式不对
+//
+//	  测试checkLegality
+//	  1.投票选项为空
+//	  2.投票选项不为空
+//	  2.1.存在该投票选项
+//	  2.2.不存在投票选项
+//
+//	  测试getScoreByOption
+//	  由前置条件得指必须存在该选项
+//
+
 
 	/**
 	 * 针对VoteType(Map<String,Integer> options)
 	 * 1.不存在投票选项
 	 * 2.存在投票选项
-//	 * 2.1Key符合条件
-//	 * 2.2Key不符合条件
+	 * 2.1Key符合条件
+	 * 2.2Key不符合条件
 	 */
 	@Test
 	public void VoteTypeTest_NotRegex()
@@ -45,8 +71,14 @@ class VoteTypeTest {
 	}
 	/**
 	 * 针对VoteType(String regex)
-	 * 测试带数字的
-	 * 测试不带数字的
+	 * 测试成功：
+	 * 1.测试带数字的
+	 * 	1.1不含负数
+	 * 	1.2含负数
+	 * 2.测试不带数字的
+	 * 测试抛出异常：
+	 * 1，超过5个长度
+	 * 2.格式不对
 	 */
 	@Test
 	public void VoteTypeTest_regex()
@@ -59,6 +91,14 @@ class VoteTypeTest {
 		VoteType voteType = new VoteType("\"喜欢\"(2)|\"不喜欢\"(0)|\"无所谓\"(1)");
 		assertEquals(options,voteType.getOptions());
 
+		//"喜欢"(-2)|"不喜欢"(0)|"无所谓"(1)
+		Map<String, Integer> options3 = new HashMap<>();
+		options3.put("喜欢",-2);
+		options3.put("不喜欢",0);
+		options3.put("无所谓",1);
+		VoteType voteType3 = new VoteType("\"喜欢\"(-2)|\"不喜欢\"(0)|\"无所谓\"(1)");
+		assertEquals(options3,voteType3.getOptions());
+
 		//"支持"|"反对"|"弃权"
 		//没有分数都默认为1
 		Map<String, Integer> options2 = new HashMap<>();
@@ -67,6 +107,9 @@ class VoteTypeTest {
 		options2.put("弃权",1);
 		VoteType voteType2 = new VoteType("\"支持\"|\"反对\"|\"弃权\"");
 		assertEquals(options2,voteType2.getOptions());
+
+		assertThrows(IllegalArgumentException.class,()->new VoteType("\"超级超级支持\"|\"反对\"|\"弃权\""),"选项名长度超过5");
+		assertThrows(IllegalArgumentException.class,()->new VoteType("\"支持\"(1)|\"反对\"|\"弃权\""),"两种情况都不匹配");
 	}
 
 	/**

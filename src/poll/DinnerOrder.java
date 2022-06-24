@@ -15,30 +15,23 @@ import java.util.List;
 import java.util.Map;
 
 public class DinnerOrder extends GeneralPollImpl<Dish> implements Poll<Dish> {
-// Rep Invariants
+    // Rep Invariants
     //未说明部分同父类GeneralPollImpl一致
     //candidates.size()>=1;
     //voters.size()<=quantity<=voters.size()<=candidates.size()
     //实名
     //限定为投票类型 喜欢、不喜欢、无所谓
 
-    //votes的VoteItem的投票候选人，要刚好覆盖到了所有的candidate候选人
-    //votes的VoteItem的投票候选人，不能有其他候选人
-    //votes的VoteItem的value投票选项，不能包含VoteType.options的Keys集合之外的
-    //candidates.size()=statistics.size()=results.size()
-
-    //statistics与results的key要刚好覆盖到了所有的candidate候选人
-    //statistics与results的key不能有其他候选人
-    //candidates.size()=statistics.size()=results.size()
-
     // Abstract Function
-    // AF（businessVoting）->聚餐点菜，候选对象数量》=1，只允许投票喜欢和不喜欢和无所谓，且投票实名的，且能够根据不同身份划分权重的，
-    //    计票规则是加权得到各个菜品得分，遴选规则选择排名前k的菜，若因为有多道菜得分相等而无法自然排出前
-    //    k名，则除了那些明确可进入前k名的菜之外，在其他得分相等的菜中随
-    //    机选取一部分，凑足k个菜
+    // AF（businessVoting）->聚餐点菜，候选对象数量>=1，只允许投票喜欢和不喜欢和无所谓，且投票实名的，且能够根据不同身份划分权重的，
+    // 计票规则是加权得到各个菜品得分，遴选规则选择排名前k的菜，若因为有多道菜得分相等而无法自然排出前
+    // k名，则除了那些明确可进入前k名的菜之外，在其他得分相等的菜中随
+    // 机选取一部分，凑足k个菜
 
     // Safety from Rep Exposure
-    // TODO
+    // 没有使用public而是protected
+    // 对于date可变类型采用深拷贝clone
+    // 在addVoter等方法中使用防御性拷贝
 
     private void checkRep()
     {
@@ -106,8 +99,8 @@ public class DinnerOrder extends GeneralPollImpl<Dish> implements Poll<Dish> {
     }
 
     @Override
-    public Double accept(Visitor visitor) {
-        return super.accept(visitor);
+    public void accept(Visitor visitor) {
+         super.accept(visitor);
     }
 
     @Override

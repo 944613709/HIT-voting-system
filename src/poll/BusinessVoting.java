@@ -19,20 +19,14 @@ public class BusinessVoting extends GeneralPollImpl<Proposal> implements Poll<Pr
     //candidates.size()=1;
     //quantity=1;
 
-    //votes的VoteItem的投票候选人，要刚好覆盖到了所有的candidate候选人
-    //votes的VoteItem的投票候选人，不能有其他候选人
-    //votes的VoteItem的value投票选项，不能包含VoteType.options的Keys集合之外的
-    //candidates.size()=statistics.size()=results.size()
-
-    //statistics与results的key要刚好覆盖到了所有的candidate候选人
-    //statistics与results的key不能有其他候选人
-    //candidates.size()=statistics.size()=results.size()
-
     // Abstract Function
     // AF（businessVoting）->商业提案，候选对象数量为1，拟选出候选对象为0或者1，只允许投票支持否定和弃权，且投票实名的，且能够根据股份划分权重的，
     //计票规则是统计获得支持票的数量，遴选规则是获得支持票超过合法选票的2/3，即表示表决通过。
+
     // Safety from Rep Exposure
-    // TODO
+    // 没有使用public而是protected
+    // 对于date可变类型采用深拷贝clone
+    // 在addVoter等方法中使用防御性拷贝
 
 
     public BusinessVoting() {
@@ -77,8 +71,8 @@ public class BusinessVoting extends GeneralPollImpl<Proposal> implements Poll<Pr
     }
 
     @Override
-    public Double accept(Visitor visitor) {
-        return super.accept(visitor);
+    public void accept(Visitor visitor) {
+         super.accept(visitor);
     }
 
     @Override

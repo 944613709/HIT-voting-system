@@ -12,6 +12,15 @@ import java.util.Objects;
 import java.util.Set;
 
 public class BusinessVotingStatisticsStrategy<Proposal> implements StatisticsStrategy<Proposal> {
+    /**
+     * 统计每个菜品的总得分（加权求和）；
+     * @param votes
+     * @param voteType
+     * @param votersVoteFrequencies
+     * @param voteIsLegal
+     * @param voters
+     * @return
+     */
     @Override
     public Map<Proposal, Double> statistics(Set<Vote<Proposal>> votes, VoteType voteType, Map<Voter,Integer> votersVoteFrequencies, Map<Vote<Proposal>,Boolean> voteIsLegal,Map<Voter, Double> voters) {
             HashMap<Proposal, Double> statistics = new HashMap<Proposal, Double>();

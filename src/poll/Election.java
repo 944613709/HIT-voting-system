@@ -22,19 +22,15 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
     //要求VoteType是 支持反对弃权(1|-1|0)
     //要求每个投票者投的支持票个数<=quantity
 
-    //votes的VoteItem的投票候选人，要刚好覆盖到了所有的candidate候选人
-    //votes的VoteItem的投票候选人，不能有其他候选人
-    //votes的VoteItem的value投票选项，不能包含VoteType.options的Keys集合之外的
-    //candidates.size()=statistics.size()=results.size()
-
-    //statistics与results的key要刚好覆盖到了所有的candidate候选人
-    //statistics与results的key不能有其他候选人
-    //candidates.size()=statistics.size()=results.size()
-
     // Abstract Function
-    // AF(Election)->代表选举，匿名
+    // AF(Election)->代表选举，候选对象数量>=1,只允许投票支持反对弃权，匿名投票，没有权重之分，
+    // 计票规则统计支持票总数，遴选规则选择排名前k的候选人，若有多个候选人的支持票数量相等而无
+    // 法自然排出前k名，则仅有那些明确可进入前k名的人当选；
+
     // Safety from Rep Exposure
-    // TODO
+    // 没有使用public而是protected
+    // 对于date可变类型采用深拷贝clone
+    // 在addVoter等方法中使用防御性拷贝
     private void checkRep()
     {
         assert candidates.size()>=1;
@@ -83,9 +79,7 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
             if(countSupport>quantity)//不满足条件
                 super.voteIsLegal.put(vote,false);//则标记不合法
         }
-//        for (Map.Entry<Vote<Person>, Boolean> entry : voteIsLegal.entrySet()) {
-//            System.out.println("entry.getValue() = " + entry.getValue());
-//        }//测试
+
 
     }
 
@@ -106,8 +100,8 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
     }
 
     @Override
-    public Double accept(Visitor visitor) {
-        return  super.accept(visitor);
+    public void accept(Visitor visitor) {
+          super.accept(visitor);
     }
 
     @Override

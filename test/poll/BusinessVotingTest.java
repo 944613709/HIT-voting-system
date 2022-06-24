@@ -262,16 +262,6 @@ class BusinessVotingTest {
 
 
 	}
-	//表决成功->最终这个候选对象被选中
-	//     * * 1个候选对象
-	//     * * 候选人candidate1
-	//     * * 投票人vr1，权重为3，对candidate1-support
-	//     * * 投票人vr2，权重为1，对candidate1-Oppose
-	//     * * 投票人vr3，权重为1，对candidate1-Oppose
-	//     * 计票得到	candidate1->3
-	//     * 总共合法选票数量2
-	//     * 均大于(2*(2/3))
-	//     * 遴选得到candidate1>1
 
 	/**
 	 * selection测试

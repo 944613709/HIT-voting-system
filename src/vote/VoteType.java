@@ -23,7 +23,6 @@ public class VoteType {
 	 * String不能为""，不能为null
 	 * @return
 	 */
-	//TODO
 	private void checkRep() {
 		for (Map.Entry<String, Integer> stringIntegerEntry : options.entrySet()) {
 			String keyStr = stringIntegerEntry.getKey();
@@ -58,7 +57,7 @@ public class VoteType {
 	//	也可以用如下形式：
 	//			“支持”|“反对”|“弃权”
 	//	与上面的例子相比，区别是没有分数。这种情况表明各个投票选项的权重是一样的
-	public VoteType(String regex) {
+	public VoteType(String regex) throws IllegalArgumentException{
 		// split的参数是一个正则表达式，‘|’需要转义
 		String[] inputOptions = regex.split("\\|");
 		//得到 “喜欢”(2)
@@ -90,7 +89,10 @@ public class VoteType {
 		for (String option : inputOptions) {
 			Matcher m = regexWithoutNum.matcher(option);
 			if(!m.matches())
+			{
 				unMatchFlag++;//若这个当前不匹配，不匹配次数+1
+				break;
+			}
 			if (m.group(1).length() > 5)
 				throw new IllegalArgumentException("选项名长度超过5");
 			options.put(m.group(1), 1);

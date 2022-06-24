@@ -15,8 +15,9 @@ import java.util.Map;
  * 访问者 计算合法选票在所有选票中所占比例
  */
 public class CountProportionVisitor<C> extends Visitor<C>{
+    private Double data;
     @Override
-    public Double visit(GeneralPollImpl<C> generalPoll){
+    public void visit(GeneralPollImpl<C> generalPoll){
         Double allTickets = 0.0;
         Double legalTickets = 0.0;
         Map<Vote<C>, Boolean> voteIsLegal = generalPoll.getVoteIsLegal();
@@ -27,6 +28,15 @@ public class CountProportionVisitor<C> extends Visitor<C>{
             if(isLegal)
                 legalTickets++;
         }
-        return legalTickets/allTickets;
+        data = legalTickets/allTickets;
+    }
+
+    /**
+     * 获得data
+     * @return
+     */
+    @Override
+    public double getData() {
+        return data;
     }
 }

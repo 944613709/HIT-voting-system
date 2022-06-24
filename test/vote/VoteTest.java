@@ -13,11 +13,23 @@ import java.util.Set;
 class VoteTest {
 
 	// test strategy
-	// TODO
+//	  Vote构造函数
+//	  1.满足条件
+//	  2.不满足条件，voteItem.size()<1
+//			 测试getVoteItems
+//	  1.voteItems只有一个候选人
+//	  2.voteItems含多个候选人
+//		  	测试candidateIncluded
+//	  1.待查询候选人在选票中
+//	  2.待查询候选人不在选票中
+//			测试getDate
+
 
 	/**
-	 * Vote初始化
+	 * Vote构造函数
 	 * 测试
+	 * 1.满足条件
+	 * 2.不满足条件，voteItem.size()<1
 	 */
 	@Test
 	void VoteTest() {
@@ -29,6 +41,13 @@ class VoteTest {
 		Vote<Person> personVote = new Vote<>(voteItems, date);
 		assertEquals(voteItems,personVote.getVoteItems());
 		assertEquals(date,personVote.getDate());
+
+		//因为是运行检查之后assert false所以注释
+//		Set<VoteItem<Person>> voteItems2 = new HashSet<>();
+//		Person person2 = new Person("candidate2", 15);
+//		VoteItem<Person> voteItem2 = new VoteItem<>(person2, "支持");
+//		Calendar date2 =new GregorianCalendar(2019, 6, 14, 16, 15,30);
+//		Vote<Person> personVote2 = new Vote<>(voteItems2, date2);
 	}
 
 	/**

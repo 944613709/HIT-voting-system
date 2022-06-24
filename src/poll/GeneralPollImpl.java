@@ -39,30 +39,18 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	//name不能为“”
 	//date不能为null
 	//quantity>0;
-
-	//需要选出的数量quantity<=candidates.size() =statistics.size()
-
-	//votes的VoteItem的投票候选人，要刚好覆盖到了所有的candidate候选人
-	//votes的VoteItem的投票候选人，不能有其他候选人
-	//votes的VoteItem的value投票选项，不能包含VoteType.options的Keys集合之外的
-	//candidates.size()=statistics.size()
-
-	//statistics与results的key要刚好覆盖到了所有的candidate候选人
-	//statistics与results的key不能有其他候选人
-	//candidates.size()=statistics.size()
-
 	// Abstract Function
-	// TODO
+	// AF->为一个匿名投票活动，基本信息有活动名称，活动时间，投票人及权重，拟选出对象数量，投票类型，选票集合，计票结果，遴选结果
+	// 每个投票人提交投票次数，投票合法记录。
 	// Safety from Rep Exposure
-	// TODO
+	// 没有使用public而是protected
+	// 对于date可变类型采用深拷贝clone
+	// 在addVoter等方法中使用防御性拷贝
 
 	private void checkRep() {
 		assert !name.equals("");
 		assert date!=null;
 		assert quantity>0;
-//		assert quantity>=candidates.size();
-//		assert candidates.size()==statistics.size();
-//		assert candidates.size()==results.size();
 	}
 
 	/**
@@ -82,9 +70,8 @@ public class GeneralPollImpl<C> implements Poll<C> {
 
 	@Override
 	public void setInfo(String name, Calendar date, VoteType type, int quantity) {
-		// 可修改
 		this.name=name;
-		this.date=date;
+		this.date=(Calendar) date.clone();
 		this.voteType=type;
 		this.quantity=quantity;
 		checkRep();
@@ -171,10 +158,6 @@ public class GeneralPollImpl<C> implements Poll<C> {
 		}
 		//若都无异常
 		voteIsLegal.put(vote,true);//鉴定为合法
-
-//		for (Map.Entry<Vote<C>, Boolean> entry : voteIsLegal.entrySet()) {
-//            System.out.println("entry.getValue() = " + entry.getValue());
-//        }
 	}
 
 	//在进行计票之前，还需要检查以下内容，具体在 Poll 的 statistics()方
@@ -194,11 +177,6 @@ public class GeneralPollImpl<C> implements Poll<C> {
 		if(votersVoteFrequencies.keySet().size()!=voters.size())
 			throw new CanNotVoteException();
 
-		// 若一个投票人提交了多次选票，则它们均为非法，计票时这个投票人的不计算在内。
-//		for (Integer value : votersVoteFrequencies.values()) {
-//			if(value!=1)
-//				throw new CanNotVoteException();
-//		}
 		//让子类继承之后从此处按规则计票
 		statistics = ss.statistics(votes, voteType, votersVoteFrequencies, voteIsLegal,voters);
 
@@ -223,8 +201,8 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	}
 
 	@Override
-	public Double accept(Visitor<C> visitor) {
-		return visitor.visit(this);
+	public void accept(Visitor<C> visitor) {
+		 visitor.visit(this);
 	}
 
 	public String getName() {
