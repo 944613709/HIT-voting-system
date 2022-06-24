@@ -21,7 +21,7 @@ class ElectionTest {
 
 	/**
 	 * 总体正常测试情况1
-	 * 选择排名前?的候选人
+	 * 选择排名前k的候选人
 	 * 候选人candidate1，candidate2，candidate3
 	 * 投票人vr1，对candidate1-support，对candidate2-oppose，对candidate3-support
 	 * 投票人vr2，对candidate1-Oppose，对candidate2-Waive，对candidate3-Waive

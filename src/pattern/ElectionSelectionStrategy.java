@@ -10,8 +10,8 @@ public class ElectionSelectionStrategy<Person> implements SelectionStrategy<Pers
     /**
      * 应用 2：选择排名前?(quantity)的候选人，
      * 若有多个候选人的支持票数量相等而无法自然排出前?名，则仅有那些明确可进入前?名的人当选；
-     * @param statistics
-     * @return
+     * @param statistics 计票结果
+     * @return  返回遴选结果
      */
     @Override
     public Map<Person, Double> selection(Map<Person, Double> statistics, int k, Map<Vote<Person>, Boolean> voteIsLegal) {
@@ -28,7 +28,6 @@ public class ElectionSelectionStrategy<Person> implements SelectionStrategy<Pers
                     return e2.getValue().intValue()- e1.getValue().intValue();
             }
         });
-//        System.out.println("res = " + res);
         //将前k个都先加入
         Double Number=1.0;//排名
         for (Map.Entry<Person, Double> entry : res) {
@@ -42,7 +41,6 @@ public class ElectionSelectionStrategy<Person> implements SelectionStrategy<Pers
                 break;
             }
         }
-//        System.out.println("res = " + res);
         //检查是否若有多个候选人的支持票数量相等而无法自然排出前?名，则仅有那些明确可进入前?名的人当选；
         ArrayList<Person> peopleWillDelete = new ArrayList<>();//将要删除的名单
         if (k<res.size() && Objects.equals(res.get(k - 1).getValue(), res.get(k).getValue()))//index=k-1代表第k个，如果这个和后面相同则需要删掉
@@ -55,12 +53,9 @@ public class ElectionSelectionStrategy<Person> implements SelectionStrategy<Pers
             i++;
             }
         }
-//        System.out.println("peopleWillDelete = " + peopleWillDelete);
-//        System.out.println("result = " + result);
         for (Person person : peopleWillDelete) {
             result.remove(person);
         }
-//        System.out.println("result = " + result);
         return result;
     }
 

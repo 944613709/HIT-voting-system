@@ -216,7 +216,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 			for (Map.Entry<C, Double> entry : results.entrySet()) {
 				C candidate = entry.getKey();
 				Double rank = entry.getValue();
-				res.append("候选人:"+candidate+" 排名:"+rank.intValue()+ "\n");
+				res.append("候选对象:"+candidate+" 排名:"+rank.intValue()+ "\n");
 			}
 			return res.toString();
 
