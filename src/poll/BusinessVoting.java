@@ -118,11 +118,11 @@ public class BusinessVoting extends GeneralPollImpl<Proposal> implements Poll<Pr
 
     @Override
     public void statistics(StatisticsStrategy<Proposal> ss) throws CanNotVoteException {
-        //TODO
         // 在使用前,在所有Vote加入之后，
         // 仅针对实名投票会提前检查若一个投票人提交了多次选票，则它们均为非法，计票时这个投票人的不计算在内。
         //要求实名投票的Vote必须都是RealNameVote
         for (Vote<Proposal> vote : votes) {
+            assert vote instanceof RealNameVote;
             RealNameVote<Proposal> realNameVote = (RealNameVote<Proposal>) vote;
             Voter voter = realNameVote.getVoter();
             if (votersVoteFrequencies.get(voter)>1) {//若多次提交投票

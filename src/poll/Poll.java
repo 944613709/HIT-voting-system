@@ -51,6 +51,7 @@ public interface Poll<C> {
 	 * 接收一个投票人对全体候选对象的投票
 	 * 
 	 * @param vote 一个投票人对全体候选对象的投票记录集合
+	 * @param voter 投票人
 	 */
 	public void addVote(Vote<C> vote,Voter voter);
 	/**
@@ -78,4 +79,10 @@ public interface Poll<C> {
 	 * 扩展访问者visitor模式
 	 */
 	public void accept(Visitor visitor);
+	/**
+	 * 在addVote之前检查该选票合法性并标记
+	 * @param vote 投票
+	 * @param voter 投票人
+	 */
+	public void checkVote(Vote<C> vote,Voter voter);
 }

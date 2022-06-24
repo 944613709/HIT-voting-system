@@ -278,4 +278,17 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	public Map<Vote<C>, Boolean> getVoteIsLegal() {
 		return voteIsLegal;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		GeneralPollImpl<?> that = (GeneralPollImpl<?>) o;
+		return quantity == that.quantity && Objects.equals(name, that.name) && Objects.equals(date, that.date) && Objects.equals(candidates, that.candidates) && Objects.equals(voters, that.voters) && Objects.equals(voteType, that.voteType) && Objects.equals(votes, that.votes) && Objects.equals(statistics, that.statistics) && Objects.equals(results, that.results) && Objects.equals(votersVoteFrequencies, that.votersVoteFrequencies) && Objects.equals(voteIsLegal, that.voteIsLegal);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, date, candidates, voters, quantity, voteType, votes, statistics, results, votersVoteFrequencies, voteIsLegal);
+	}
 }

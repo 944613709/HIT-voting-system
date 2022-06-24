@@ -35,8 +35,11 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
     // AF(Election)->代表选举，匿名
     // Safety from Rep Exposure
     // TODO
-
-
+    private void checkRep()
+    {
+        assert candidates.size()>=1;
+        assert quantity<=candidates.size();
+    }
     public Election() {
         super();
     }
@@ -54,6 +57,7 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
     @Override
     public void addCandidates(List<Person> candidates) {
         super.addCandidates(candidates);
+        checkRep();
     }
 
     @Override
@@ -152,4 +156,13 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
         return super.getVotersVoteFrequencies();
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }

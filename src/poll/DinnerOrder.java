@@ -13,6 +13,17 @@ import java.util.List;
 import java.util.Map;
 
 public class DinnerOrder extends GeneralPollImpl<Dish> implements Poll<Dish> {
+
+
+
+
+
+    private void checkRep()
+    {
+        //TODO
+    }
+
+
     public DinnerOrder() {
         super();
     }

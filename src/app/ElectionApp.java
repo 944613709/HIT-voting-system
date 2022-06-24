@@ -15,9 +15,14 @@ import vote.VoteItem;
 import vote.VoteType;
 
 public class ElectionApp {
-
+	/**
+	 * 	 * 选择排名前2的候选人
+	 * 	 * 候选人candidate1，candidate2，candidate3
+	 * 	 * 投票人vr1，对candidate1-support，对candidate2-oppose，对candidate3-support
+	 * 	 * 投票人vr2，对candidate1-Oppose，对candidate2-Waive，对candidate3-Waive
+	 * @param args
+	 */
 	public static void main(String[] args) {
-
 		// 创建2个投票人
 		Voter vr1 = new Voter("v1");
 		Voter vr2 = new Voter("v2");
@@ -35,10 +40,13 @@ public class ElectionApp {
 		VoteType voteType = new VoteType(types);
 
 		// 创建候选对象：候选人
-		Person p1 = new Person("ABC", 19);
-		Person p2 = new Person("DEF", 20);
-		Person p3 = new Person("GHI", 21);
-
+		Person p1 = new Person("candidate1", 19);
+		Person p2 = new Person("candidate2", 20);
+		Person p3 = new Person("candidate3", 21);
+		ArrayList<Person> candidates = new ArrayList<>();
+		candidates.add(p1);
+		candidates.add(p2);
+		candidates.add(p3);
 		// 创建投票项，前三个是投票人vr1对三个候选对象的投票项，后三个是vr2的投票项
 		VoteItem<Person> vi11 = new VoteItem<>(p1, "Support");
 		VoteItem<Person> vi12 = new VoteItem<>(p2, "Oppose");
@@ -52,29 +60,30 @@ public class ElectionApp {
 		VoteItem<Person> vi22 = new VoteItem<>(p2, "Waive");
 		VoteItem<Person> vi23 = new VoteItem<>(p3, "Waive");
 		Set<VoteItem<Person>> voteItems2 = new HashSet<>();
-		voteItems2.add(vi11);
-		voteItems2.add(vi12);
-		voteItems2.add(vi13);
+		voteItems2.add(vi21);
+		voteItems2.add(vi22);
+		voteItems2.add(vi23);
 
 		// 创建2个投票人vr1、vr2的选票
-		Vote<Person> rv1 = new Vote<Person>(voteItems1,new GregorianCalendar(2019, 6, 14, 16, 15,30));
-		Vote<Person> rv2 = new Vote<Person>(voteItems2,new GregorianCalendar(2019, 6, 14, 16, 15,30));
-
+		Vote<Person> rv1 = new Vote<Person>(voteItems1, new GregorianCalendar(2019, 6, 14, 16, 15, 30));
+		Vote<Person> rv2 = new Vote<Person>(voteItems2, new GregorianCalendar(2019, 6, 14, 16, 15, 30));
+//		System.out.println("rv1 = " + rv1);
+//		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> poll = new Election();
+		Election poll = new Election();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
 		int quantity = 2;
-		poll.setInfo(name,date,voteType,quantity);
+		poll.setInfo(name, date, voteType, quantity);
 
 		// 增加投票人及其权重
 		poll.addVoters(weightedVoters);
-
+		poll.addCandidates(candidates);
 		// 增加三个投票人的选票
-		poll.addVote(rv1,vr1);
-		poll.addVote(rv2,vr2);
-
+		poll.addVote(rv1, vr1);
+		poll.addVote(rv2, vr2);
+//		System.out.println("poll = " + poll.getVotes());
 		// 按规则计票
 		ElectionStatisticsStrategy<Person> electionStatisticsStrategy = new ElectionStatisticsStrategy<>();
 		try {
@@ -82,11 +91,13 @@ public class ElectionApp {
 		} catch (CanNotVoteException e) {
 			System.out.println("e.getMessage() = " + e.getMessage());
 		}
+
 		// 按规则遴选
 		ElectionSelectionStrategy<Person> electionSelectionStrategy = new ElectionSelectionStrategy<>();
 		poll.selection(electionSelectionStrategy);
 		// 输出遴选结果
 		System.out.println(poll.result());
-	}
 
+
+	}
 }
