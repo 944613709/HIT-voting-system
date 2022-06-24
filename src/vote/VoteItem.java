@@ -70,4 +70,12 @@ public class VoteItem<C> {
 	public int hashCode() {
 		return Objects.hash(candidate, value);
 	}
+
+	@Override
+	public String toString() {
+		return "VoteItem{" +
+				"candidate=" + candidate +
+				", value='" + value + '\'' +
+				'}';
+	}
 }

@@ -19,9 +19,8 @@ public interface Poll<C> {
 	 * @return 一个Poll<C>对象
 	 */
 	public static <C> Poll<C> create() {
-		// TODO
+		return (Poll<C>) new Election();
 
-		return null;
 	}
 
 	/**
@@ -59,14 +58,14 @@ public interface Poll<C> {
 	 *
 	 * @param 所采取的计票规则策略类
 	 */
-	public void statistics(StatisticsStrategy ss) throws CanNotVoteException;
+	public void statistics(StatisticsStrategy<C> ss) throws CanNotVoteException;
 
 	/**
 	 * 按规则遴选
 	 * 
 	 * @param ss 所采取的遴选规则策略类
 	 */
-	public void selection(SelectionStrategy ss);
+	public void selection(SelectionStrategy<C> ss);
 
 	/**
 	 * 输出遴选结果

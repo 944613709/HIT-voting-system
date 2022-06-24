@@ -4,6 +4,7 @@ import java.util.*;
 
 import auxiliary.Person;
 import auxiliary.Voter;
+import pattern.ElectionSelectionStrategy;
 import pattern.ElectionStatisticsStrategy;
 import poll.CanNotVoteException;
 import poll.Election;
@@ -75,14 +76,15 @@ public class ElectionApp {
 		poll.addVote(rv2,vr2);
 
 		// 按规则计票
-		ElectionStatisticsStrategy<Object> electionStatisticsStrategy = new ElectionStatisticsStrategy<>();
+		ElectionStatisticsStrategy<Person> electionStatisticsStrategy = new ElectionStatisticsStrategy<>();
 		try {
 			poll.statistics(electionStatisticsStrategy);
 		} catch (CanNotVoteException e) {
 			System.out.println("e.getMessage() = " + e.getMessage());
 		}
 		// 按规则遴选
-		poll.selection(/* TODO */);
+		ElectionSelectionStrategy<Person> electionSelectionStrategy = new ElectionSelectionStrategy<>();
+		poll.selection(electionSelectionStrategy);
 		// 输出遴选结果
 		System.out.println(poll.result());
 	}

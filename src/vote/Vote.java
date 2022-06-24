@@ -91,4 +91,13 @@ public class Vote<C> {
 	public int hashCode() {
 		return Objects.hash(voteItems, date);
 	}
+
+	@Override
+	public String toString() {
+		return "Vote{" +
+				"voteItems=" + voteItems +
+				", date=" + date +
+				'}';
+	}
+
 }

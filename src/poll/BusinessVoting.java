@@ -5,6 +5,7 @@ import auxiliary.Voter;
 import pattern.SelectionStrategy;
 import pattern.StatisticsStrategy;
 import pattern.Visitor;
+import vote.RealNameVote;
 import vote.Vote;
 import vote.VoteType;
 
@@ -17,7 +18,6 @@ public class BusinessVoting extends GeneralPollImpl<Proposal> implements Poll<Pr
     //未说明部分同父类GeneralPollImpl一致
     //candidates.size()=1;
     //quantity=1;
-    //要求VoteType是 支持反对齐全
 
     //votes的VoteItem的投票候选人，要刚好覆盖到了所有的candidate候选人
     //votes的VoteItem的投票候选人，不能有其他候选人
@@ -29,7 +29,8 @@ public class BusinessVoting extends GeneralPollImpl<Proposal> implements Poll<Pr
     //candidates.size()=statistics.size()=results.size()
 
     // Abstract Function
-    // TODO
+    // AF（businessVoting）->商业提案，候选对象数量为1，拟选出候选对象为0或者1，只允许投票支持否定和弃权，且投票实名的，且能够根据股份划分权重的，
+    //计票规则是统计获得支持票的数量，遴选规则是获得支持票超过合法选票的2/3，即表示表决通过。
     // Safety from Rep Exposure
     // TODO
 
@@ -116,12 +117,23 @@ public class BusinessVoting extends GeneralPollImpl<Proposal> implements Poll<Pr
     }
 
     @Override
-    public void statistics(StatisticsStrategy ss) throws CanNotVoteException {
+    public void statistics(StatisticsStrategy<Proposal> ss) throws CanNotVoteException {
+        //TODO
+        // 在使用前,在所有Vote加入之后，
+        // 仅针对实名投票会提前检查若一个投票人提交了多次选票，则它们均为非法，计票时这个投票人的不计算在内。
+        //要求实名投票的Vote必须都是RealNameVote
+        for (Vote<Proposal> vote : votes) {
+            RealNameVote<Proposal> realNameVote = (RealNameVote<Proposal>) vote;
+            Voter voter = realNameVote.getVoter();
+            if (votersVoteFrequencies.get(voter)>1) {//若多次提交投票
+                voteIsLegal.put(vote,false);
+            }
+        }
         super.statistics(ss);
     }
 
     @Override
-    public void selection(SelectionStrategy ss) {
+    public void selection(SelectionStrategy<Proposal> ss) {
         super.selection(ss);
     }
 

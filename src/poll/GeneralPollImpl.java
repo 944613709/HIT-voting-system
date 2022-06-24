@@ -13,17 +13,17 @@ import vote.Vote;
 public class GeneralPollImpl<C> implements Poll<C> {
 
 	// 投票活动的名称
-	private String name;
+	protected String name;
 	// 投票活动发起的时间
-	private Calendar date;
+	protected Calendar date;
 	// 候选对象集合
-	private List<C> candidates;
+	protected List<C> candidates;
 	// 投票人集合，key为投票人，value为其在本次投票中所占权重
-	private Map<Voter, Double> voters;
+	protected Map<Voter, Double> voters;
 	// 拟选出的候选对象数量
 	protected int quantity;
 	// 本次投票拟采用的投票类型（合法选项及各自对应的分数）
-	private VoteType voteType;
+	protected VoteType voteType;
 	// 所有选票集合
 	protected Set<Vote<C>> votes;
 	// 计票结果，key为候选对象，value为其得分
@@ -75,6 +75,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 		results = new HashMap<>();
 		votersVoteFrequencies = new HashMap<>();
 		voteIsLegal = new HashMap<>();
+		votes = new HashSet<>();
 	}
 
 
@@ -138,23 +139,41 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	{
 		Set<VoteItem<C>> voteItems = vote.getVoteItems();
 		for (VoteItem<C> voteItem : voteItems) {
-			if(!candidates.contains(voteItem))
+			if(!candidates.contains(voteItem.getCandidate()))
+			{
 				voteIsLegal.put(vote,false);//包含了不在本次投票活动的候选人
+				return;
+			}
+
 			if(!voteType.checkLegality(voteItem.getVoteValue()))
+			{
 				voteIsLegal.put(vote,false);//一张选票中出现了本次投票不允许的选项值
+				return;
+			}
+
 			for(VoteItem<C> voteItem2 : voteItems)
 			{
 				if(voteItem2!=voteItem && voteItem2.getCandidate().equals(voteItem.getCandidate()))
+				{
 					voteIsLegal.put(vote,false);;//一张选票中有对同一个候选对象的多次投票
+					return;
+				}
 			}
 		}
 		for (C candidate : candidates) {
 			if(!vote.candidateIncluded(candidate))
+			{
 				voteIsLegal.put(vote,false);//一张选票中没有包含本次投票活动中的所有候选人
+				return;
+			}
+
 		}
 		//若都无异常
-		if(voteIsLegal.get(vote)!=false)
-			voteIsLegal.put(vote,true);//鉴定为合法
+		voteIsLegal.put(vote,true);//鉴定为合法
+
+//		for (Map.Entry<Vote<C>, Boolean> entry : voteIsLegal.entrySet()) {
+//            System.out.println("entry.getValue() = " + entry.getValue());
+//        }
 	}
 
 	//在进行计票之前，还需要检查以下内容，具体在 Poll 的 statistics()方
@@ -167,7 +186,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	 * @param ss 所采取的计票规则策略类
 	 */
 	@Override
-	public void statistics(StatisticsStrategy ss) throws CanNotVoteException {
+	public void statistics(StatisticsStrategy<C> ss) throws CanNotVoteException {
 		//在进行计票之前，还需要检查以下内容，具体在 Poll 的 statistics()方法中实现：
 
 		// 若尚有投票人还未投票，则不能开始计票；
@@ -185,14 +204,13 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	}
 
 	@Override
-	public void selection(SelectionStrategy ss) {
+	public void selection(SelectionStrategy<C> ss) {
 		results = ss.selection(statistics,quantity);
 	}
 
 	@Override
 	public String result() {
-		// TODO
-		return null;
+		return results.toString();
 	}
 
 	@Override
@@ -230,5 +248,34 @@ public class GeneralPollImpl<C> implements Poll<C> {
 
 	public Map<Voter, Integer> getVotersVoteFrequencies() {
 		return votersVoteFrequencies;
+	}
+
+	@Override
+	public String toString() {
+		return "GeneralPollImpl{" +
+				"name='" + name + '\'' +
+				", date=" + date +
+				", candidates=" + candidates +
+				", voters=" + voters +
+				", quantity=" + quantity +
+				", voteType=" + voteType +
+				", votes=" + votes +
+				", statistics=" + statistics +
+				", results=" + results +
+				", votersVoteFrequencies=" + votersVoteFrequencies +
+				", voteIsLegal=" + voteIsLegal +
+				'}';
+	}
+
+	public Set<Vote<C>> getVotes() {
+		return votes;
+	}
+
+	public Map<C, Double> getStatistics() {
+		return statistics;
+	}
+
+	public Map<Vote<C>, Boolean> getVoteIsLegal() {
+		return voteIsLegal;
 	}
 }

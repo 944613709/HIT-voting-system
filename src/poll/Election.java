@@ -62,8 +62,8 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
     }
 
     @Override
-    public void checkVote(Vote<Person> vote) {
-        super.checkVote(vote);
+    public void checkVote(Vote<Person> vote, Voter voter) {
+        super.checkVote(vote,voter);
 
         //检查额外的条件
         //（仅应用 2）一张选票中对所有候选对象的支持票数量<=k(quantity)。
@@ -79,22 +79,32 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
             if(countSupport>quantity)//不满足条件
                 super.voteIsLegal.put(vote,false);//则标记不合法
         }
+//        for (Map.Entry<Vote<Person>, Boolean> entry : voteIsLegal.entrySet()) {
+//            System.out.println("entry.getValue() = " + entry.getValue());
+//        }//测试
+
     }
 
 
     @Override
-    public void statistics(StatisticsStrategy ss) throws CanNotVoteException {
+    public void statistics(StatisticsStrategy<Person> ss) throws CanNotVoteException {
         super.statistics(ss);
     }
 
     @Override
-    public void selection(SelectionStrategy ss) {
+    public void selection(SelectionStrategy<Person> ss) {
         super.selection(ss);
     }
 
     @Override
     public String result() {
-        return super.result();
+        StringBuilder res = new StringBuilder();
+        for (Map.Entry<Person, Double> entry : results.entrySet()) {
+            Person candidate = entry.getKey();
+            Double rank = entry.getValue();
+            res.append("候选人:"+candidate+" 排名:"+rank + "\n");
+        }
+        return res.toString();
     }
 
     @Override
@@ -141,4 +151,5 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
     public Map<Voter, Integer> getVotersVoteFrequencies() {
         return super.getVotersVoteFrequencies();
     }
+
 }

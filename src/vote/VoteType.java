@@ -113,4 +113,11 @@ public class VoteType {
 	public Map<String, Integer> getOptions() {
 		return Collections.unmodifiableMap(options);
 	}
+
+	@Override
+	public String toString() {
+		return "VoteType{" +
+				"options=" + options +
+				'}';
+	}
 }
