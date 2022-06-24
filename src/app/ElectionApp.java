@@ -96,6 +96,12 @@ public class ElectionApp {
 		ElectionSelectionStrategy<Person> electionSelectionStrategy = new ElectionSelectionStrategy<>();
 		poll.selection(electionSelectionStrategy);
 		// 输出遴选结果
+		System.out.println("本次投票类型"+poll.getClass());
+		System.out.println("本次投票具体信息" +poll);
+		System.out.println("统计获得支持票的数量,输出计票结果");
+		System.out.println(poll.getStatistics());
+		System.out.println("选择排名前k的候选人，若有多个候选人的支持票数量相等而无" +
+				"法自然排出前k名，则仅有那些明确可进入前k名的人当选");
 		System.out.println(poll.result());
 
 

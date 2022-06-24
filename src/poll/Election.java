@@ -102,13 +102,7 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
 
     @Override
     public String result() {
-        StringBuilder res = new StringBuilder();
-        for (Map.Entry<Person, Double> entry : results.entrySet()) {
-            Person candidate = entry.getKey();
-            Double rank = entry.getValue();
-            res.append("ºòÑ¡ÈË:"+candidate+" ÅÅÃû:"+rank + "\n");
-        }
-        return res.toString();
+        return super.result();
     }
 
     @Override

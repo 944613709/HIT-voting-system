@@ -18,7 +18,7 @@ public class ElectionStatisticsStrategy <Person> implements StatisticsStrategy<P
     /**
      * 计算支持票总总数
      */
-    public Map<Person, Double> statistics(Set<Vote<Person>> votes, VoteType voteType, Map<Voter,Integer> votersVoteFrequencies, Map<Vote<Person>,Boolean> voteIsLegal) {
+    public Map<Person, Double> statistics(Set<Vote<Person>> votes, VoteType voteType, Map<Voter,Integer> votersVoteFrequencies, Map<Vote<Person>,Boolean> voteIsLegal,Map<Voter, Double> voters) {
         // 在使用前仅针对实名投票会提前检查若一个投票人提交了多次选票，则它们均为非法，计票时这个投票人的不计算在内。
         //因此我们在这个里面设计不考虑上述多次投票
         HashMap<Person, Double> statistics = new HashMap<Person, Double>();

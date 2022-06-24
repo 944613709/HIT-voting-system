@@ -1,6 +1,7 @@
 package pattern;
 
 import auxiliary.Person;
+import vote.Vote;
 
 import java.awt.font.FontRenderContext;
 import java.util.*;
@@ -13,7 +14,7 @@ public class ElectionSelectionStrategy<Person> implements SelectionStrategy<Pers
      * @return
      */
     @Override
-    public Map<Person, Double> selection(Map<Person, Double> statistics,int k) {
+    public Map<Person, Double> selection(Map<Person, Double> statistics, int k, Map<Vote<Person>, Boolean> voteIsLegal) {
         //statistics的value->支持票总总数
         HashMap<Person, Double> result = new HashMap<>();
         //一般情况
@@ -62,4 +63,5 @@ public class ElectionSelectionStrategy<Person> implements SelectionStrategy<Pers
 //        System.out.println("result = " + result);
         return result;
     }
+
 }

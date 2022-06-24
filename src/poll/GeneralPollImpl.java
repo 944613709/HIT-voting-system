@@ -2,6 +2,7 @@ package poll;
 
 import java.util.*;
 
+import auxiliary.Person;
 import auxiliary.Voter;
 import pattern.SelectionStrategy;
 import pattern.StatisticsStrategy;
@@ -155,7 +156,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 			{
 				if(voteItem2!=voteItem && voteItem2.getCandidate().equals(voteItem.getCandidate()))
 				{
-					voteIsLegal.put(vote,false);;//一张选票中有对同一个候选对象的多次投票
+					voteIsLegal.put(vote,false);//一张选票中有对同一个候选对象的多次投票
 					return;
 				}
 			}
@@ -199,18 +200,26 @@ public class GeneralPollImpl<C> implements Poll<C> {
 //				throw new CanNotVoteException();
 //		}
 		//让子类继承之后从此处按规则计票
-		statistics = ss.statistics(votes, voteType, votersVoteFrequencies, voteIsLegal);
+		statistics = ss.statistics(votes, voteType, votersVoteFrequencies, voteIsLegal,voters);
 
 	}
 
 	@Override
 	public void selection(SelectionStrategy<C> ss) {
-		results = ss.selection(statistics,quantity);
+		results = ss.selection(statistics,quantity,voteIsLegal);
 	}
 
 	@Override
 	public String result() {
-		return results.toString();
+
+			StringBuilder res = new StringBuilder();
+			for (Map.Entry<C, Double> entry : results.entrySet()) {
+				C candidate = entry.getKey();
+				Double rank = entry.getValue();
+				res.append("候选人:"+candidate+" 排名:"+rank.intValue()+ "\n");
+			}
+			return res.toString();
+
 	}
 
 	@Override
@@ -252,18 +261,9 @@ public class GeneralPollImpl<C> implements Poll<C> {
 
 	@Override
 	public String toString() {
-		return "GeneralPollImpl{" +
-				"name='" + name + '\'' +
-				", date=" + date +
+		return "name='" + name + '\'' +
 				", candidates=" + candidates +
 				", voters=" + voters +
-				", quantity=" + quantity +
-				", voteType=" + voteType +
-				", votes=" + votes +
-				", statistics=" + statistics +
-				", results=" + results +
-				", votersVoteFrequencies=" + votersVoteFrequencies +
-				", voteIsLegal=" + voteIsLegal +
 				'}';
 	}
 

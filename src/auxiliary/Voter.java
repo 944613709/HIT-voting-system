@@ -2,7 +2,11 @@ package auxiliary;
 
 //无需修改本代码
 public class Voter {
-	
+	@Override
+	public String toString() {
+		return "ID->权重:" + ID ;
+	}
+
 	//只需保留身份ID即可
 	private String ID;
 

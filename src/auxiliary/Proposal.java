@@ -60,4 +60,9 @@ public class Proposal {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return title;
+	}
 }

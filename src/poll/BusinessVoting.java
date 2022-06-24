@@ -139,7 +139,11 @@ public class BusinessVoting extends GeneralPollImpl<Proposal> implements Poll<Pr
 
     @Override
     public String result() {
-        return super.result();
+
+         if(results.size()==0)
+             return new String("不通过");
+        else
+            return new String("通过");
     }
 
 }

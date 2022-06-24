@@ -969,8 +969,8 @@ class PollTest {
 		// 按规则遴选
 		ElectionSelectionStrategy<Person> electionSelectionStrategy = new ElectionSelectionStrategy<>();
 		poll.selection(electionSelectionStrategy);
-		assertEquals("候选人:candidate1 排名:1.0\n" +
-				"候选人:candidate3 排名:2.0\n", poll.result());
+		assertEquals("候选人:candidate1 排名:1\n" +
+				"候选人:candidate3 排名:2\n", poll.result());
 	}
 }
 
