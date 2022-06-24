@@ -223,8 +223,8 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
-		visitor.visit(this);
+	public Double accept(Visitor<C> visitor) {
+		return visitor.visit(this);
 	}
 
 	public String getName() {

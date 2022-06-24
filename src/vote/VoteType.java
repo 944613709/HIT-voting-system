@@ -1,6 +1,8 @@
 package vote;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //immutable
 public class VoteType {
@@ -9,7 +11,8 @@ public class VoteType {
 	private Map<String, Integer> options = new HashMap<>();
 
 	// Rep Invariants
-	// 选项名key不能为""，其中不允许出现空格.
+	// 选项名key不能为""，其中不允许出现空格
+	// options.size()选项个数需要>=2
 	// Abstract Function
 	// AF(String,Integer)->选项其中key为选项名、value为选项名对应的分数
 	// Safety from Rep Exposure
@@ -26,6 +29,7 @@ public class VoteType {
 			String keyStr = stringIntegerEntry.getKey();
 			assert !keyStr.equals("");
 			assert !keyStr.contains(" ");
+			assert options.size()>=2;
 		}
 	}
 
@@ -55,7 +59,44 @@ public class VoteType {
 	//			“支持”|“反对”|“弃权”
 	//	与上面的例子相比，区别是没有分数。这种情况表明各个投票选项的权重是一样的
 	public VoteType(String regex) {
-		//TODO
+		// split的参数是一个正则表达式，‘|’需要转义
+		String[] inputOptions = regex.split("\\|");
+		//得到 “喜欢”(2)
+		//或者得到 “支持”
+		if(inputOptions.length < 2) {
+			throw new IllegalArgumentException("非法输入:选项少于两个");
+		}
+		Pattern regexWithNum = Pattern.compile("\"(\\S+)\"\\(([-]?\\d+)\\)");
+		Pattern regexWithoutNum = Pattern.compile("\"(\\S+)\"");
+		int unMatchFlag=0;//不匹配次数
+		//先尝试匹配有数字模式
+		for (String option : inputOptions) {
+			Matcher m = regexWithNum.matcher(option);
+			if(!m.matches())
+			{
+				unMatchFlag++;//若这个当前不匹配，不匹配次数+1
+				break;
+			}
+			if (m.group(1).length() > 5)
+				throw new IllegalArgumentException("选项名长度超过5");
+			options.put(m.group(1), Integer.valueOf(m.group(2)));
+		}
+		if(unMatchFlag==0)
+		{
+			checkRep();
+			return;
+		}
+		//匹配无数字的等权重格式
+		for (String option : inputOptions) {
+			Matcher m = regexWithoutNum.matcher(option);
+			if(!m.matches())
+				unMatchFlag++;//若这个当前不匹配，不匹配次数+1
+			if (m.group(1).length() > 5)
+				throw new IllegalArgumentException("选项名长度超过5");
+			options.put(m.group(1), 1);
+		}
+		if(unMatchFlag==2)//代表都不匹配
+			throw new IllegalArgumentException("两种情况都不匹配");
 		checkRep();
 	}
 

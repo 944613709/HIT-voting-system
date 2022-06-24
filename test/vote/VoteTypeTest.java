@@ -23,7 +23,7 @@ class VoteTypeTest {
 //	 * 2.2Key不符合条件
 	 */
 	@Test
-	public void VoteTypeTest1()
+	public void VoteTypeTest_NotRegex()
 	{
 		Map<String, Integer> options = new HashMap<>();
 		VoteType voteType = new VoteType(options);
@@ -49,22 +49,23 @@ class VoteTypeTest {
 	 * 测试不带数字的
 	 */
 	@Test
-	public void VoteTypeTest2()
+	public void VoteTypeTest_regex()
 	{
-		//“喜欢”(2)|“不喜欢”(0)|“无所谓”(1)
+		//"喜欢"(2)|"不喜欢"(0)|"无所谓"(1)
 		Map<String, Integer> options = new HashMap<>();
 		options.put("喜欢",2);
 		options.put("不喜欢",0);
 		options.put("无所谓",1);
-		VoteType voteType = new VoteType("“喜欢”(2)|“不喜欢”(0)|“无所谓”(1)");
+		VoteType voteType = new VoteType("\"喜欢\"(2)|\"不喜欢\"(0)|\"无所谓\"(1)");
 		assertEquals(options,voteType.getOptions());
 
-		//“支持”|“反对”|“弃权”
+		//"支持"|"反对"|"弃权"
+		//没有分数都默认为1
 		Map<String, Integer> options2 = new HashMap<>();
 		options2.put("支持",1);
-		options2.put("反对",-1);
-		options2.put("弃权",0);
-		VoteType voteType2 = new VoteType("“支持”|“反对”|“弃权”");
+		options2.put("反对",1);
+		options2.put("弃权",1);
+		VoteType voteType2 = new VoteType("\"支持\"|\"反对\"|\"弃权\"");
 		assertEquals(options2,voteType2.getOptions());
 	}
 

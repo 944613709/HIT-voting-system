@@ -1,6 +1,10 @@
 package pattern;
 
+import poll.GeneralPollImpl;
 import poll.Poll;
+import vote.Vote;
+
+import java.util.Map;
 
 /**
  * 【任务11】考虑到将来的投票应用可能出现更多的对投票结果的处理，请在
@@ -10,9 +14,19 @@ import poll.Poll;
  *
  * 访问者 计算合法选票在所有选票中所占比例
  */
-public class CountProportionVisitor extends Visitor{
+public class CountProportionVisitor<C> extends Visitor<C>{
     @Override
-    public void visit(Poll poll) {
-        //TODO
+    public Double visit(GeneralPollImpl<C> generalPoll){
+        Double allTickets = 0.0;
+        Double legalTickets = 0.0;
+        Map<Vote<C>, Boolean> voteIsLegal = generalPoll.getVoteIsLegal();
+        for (Map.Entry<Vote<C>, Boolean> entry : voteIsLegal.entrySet()) {
+            allTickets++;
+            Vote<C> vote = entry.getKey();
+            Boolean isLegal = entry.getValue();
+            if(isLegal)
+                legalTickets++;
+        }
+        return legalTickets/allTickets;
     }
 }

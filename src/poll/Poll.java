@@ -78,7 +78,7 @@ public interface Poll<C> {
 	/**
 	 * 扩展访问者visitor模式
 	 */
-	public void accept(Visitor visitor);
+	public Double accept(Visitor<C> visitor);
 	/**
 	 * 在addVote之前检查该选票合法性并标记
 	 * @param vote 投票

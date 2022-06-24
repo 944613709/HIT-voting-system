@@ -106,8 +106,8 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
     }
 
     @Override
-    public void accept(Visitor visitor) {
-        super.accept(visitor);
+    public Double accept(Visitor visitor) {
+        return  super.accept(visitor);
     }
 
     @Override
