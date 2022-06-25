@@ -1,5 +1,6 @@
 package poll;
 
+import auxiliary.Dish;
 import auxiliary.Person;
 import auxiliary.Voter;
 import pattern.SelectionStrategy;
@@ -100,7 +101,7 @@ public class Election extends GeneralPollImpl<Person> implements Poll<Person> {
     }
 
     @Override
-    public void accept(Visitor visitor) {
+    public void accept(Visitor<Person> visitor) {
           super.accept(visitor);
     }
 

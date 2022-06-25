@@ -15,7 +15,13 @@ import java.util.Map;
  * 访问者 计算合法选票在所有选票中所占比例
  */
 public class CountProportionVisitor<C> extends Visitor<C>{
-    private Double data;
+
+    private Double data;//合法选票在所有选票中所占比例
+
+    /**
+     * 计算合法选票在所有选票中所占比例
+     * @param generalPoll
+     */
     @Override
     public void visit(GeneralPollImpl<C> generalPoll){
         Double allTickets = 0.0;

@@ -31,9 +31,9 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	protected Map<C, Double> statistics;
 	// 遴选结果，key为候选对象，value为其排序位次
 	protected Map<C, Double> results;
-	//每个voter对应的vote，应该每个voter投且仅投1次
+	//每个voter对应的提交vote次数，key为投票人，value为提交次数，应该每个voter投且仅投1次
 	protected Map<Voter,Integer> votersVoteFrequencies;
-	//记录每个Vote是否合法或者不合法
+	//记录每个Vote是否合法或者不合法，key为vote，value为是否合法
 	protected Map<Vote<C>,Boolean> voteIsLegal;
 	// Rep Invariants
 	//name不能为“”
@@ -119,7 +119,7 @@ public class GeneralPollImpl<C> implements Poll<C> {
 	}
 
 	/**
-	 * 在addVote之前检查该选票合法性并标记
+	 * 在addVote中负责检查该选票合法性并标记
 	 * @param vote 投票
 	 * @param voter 投票人
 	 */
@@ -160,19 +160,15 @@ public class GeneralPollImpl<C> implements Poll<C> {
 		voteIsLegal.put(vote,true);//鉴定为合法
 	}
 
-	//在进行计票之前，还需要检查以下内容，具体在 Poll 的 statistics()方
-	//法中实现：
-	//? 若尚有投票人还未投票，则不能开始计票；
-	//? 若一个投票人提交了多次选票，则它们均为非法，计票时不计算在内。
 	/**
 	 * 按规则计票
-	 *
+	 *  在进行计票之前，还需要检查以下内容
+	 * 	若尚有投票人还未投票，则不能开始计票；
+	 * 	若一个投票人提交了多次选票，则它们均为非法，计票时不计算在内。
 	 * @param ss 所采取的计票规则策略类
 	 */
 	@Override
 	public void statistics(StatisticsStrategy<C> ss) throws CanNotVoteException {
-		//在进行计票之前，还需要检查以下内容，具体在 Poll 的 statistics()方法中实现：
-
 		// 若尚有投票人还未投票，则不能开始计票；
 		if(votersVoteFrequencies.keySet().size()!=voters.size())
 			throw new CanNotVoteException();
@@ -189,7 +185,6 @@ public class GeneralPollImpl<C> implements Poll<C> {
 
 	@Override
 	public String result() {
-
 			StringBuilder res = new StringBuilder();
 			for (Map.Entry<C, Double> entry : results.entrySet()) {
 				C candidate = entry.getKey();
@@ -197,7 +192,6 @@ public class GeneralPollImpl<C> implements Poll<C> {
 				res.append("候选对象:"+candidate+" 排名:"+rank.intValue()+ "\n");
 			}
 			return res.toString();
-
 	}
 
 	@Override

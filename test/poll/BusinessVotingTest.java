@@ -21,7 +21,18 @@ import java.util.*;
 class BusinessVotingTest {
 
 	// test strategy
-	// TODO
+//	/**
+//	 * 针对实名投票：
+//	 * 测试对于实名投票测试多次投票后非法的情况
+//	 * 测试statistics
+//	 * 1.权重不全相同
+//	 * 2.权重都相同
+//	 * selection测试
+//	 * 1.超过2/3,通过
+//	 * 2.刚好等于2/3,未通过
+//	 * 3.小于2/3,未通过
+
+
 
 	/**
 	 * 针对实名投票：

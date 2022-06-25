@@ -99,7 +99,7 @@ public class DinnerOrder extends GeneralPollImpl<Dish> implements Poll<Dish> {
     }
 
     @Override
-    public void accept(Visitor visitor) {
+    public void accept(Visitor<Dish> visitor) {
          super.accept(visitor);
     }
 
@@ -107,5 +107,4 @@ public class DinnerOrder extends GeneralPollImpl<Dish> implements Poll<Dish> {
     public String toString() {
         return super.toString();
     }
-    //TODO
 }

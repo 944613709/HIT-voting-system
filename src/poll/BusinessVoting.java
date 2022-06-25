@@ -71,7 +71,7 @@ public class BusinessVoting extends GeneralPollImpl<Proposal> implements Poll<Pr
     }
 
     @Override
-    public void accept(Visitor visitor) {
+    public void accept(Visitor<Proposal> visitor) {
          super.accept(visitor);
     }
 
@@ -133,7 +133,6 @@ public class BusinessVoting extends GeneralPollImpl<Proposal> implements Poll<Pr
 
     @Override
     public String result() {
-
          if(results.size()==0)
              return new String("²»Í¨¹ý");
         else

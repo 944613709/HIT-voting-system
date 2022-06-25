@@ -13,7 +13,6 @@ public class RealNameVote<C> extends Vote<C>{
 	public RealNameVote(Set<VoteItem<C>> voteItems,Calendar date,Voter voter) {
 		super(voteItems,date);
 		this.voter=voter;
-
 	}
 	public Voter getVoter() {
 		return this.voter;

@@ -7,9 +7,9 @@ import java.util.*;
 
 public class DinnerOrderSelectionStrategy<Dish> implements SelectionStrategy<Dish> {
     /**
-     * 应用 3：选择排名前?的菜，若因为有多道菜得分相等而无法自然排出前
-     * ?名，则除了那些明确可进入前?名的菜之外，在其他得分相等的菜中随
-     * 机选取一部分，凑足?个菜。
+     * 应用 3：选择排名前k的菜，若因为有多道菜得分相等而无法自然排出前
+     * k名，则除了那些明确可进入前k名的菜之外，在其他得分相等的菜中随
+     * 机选取一部分，凑足k个菜。
      * @param statistics    计票结果
      * @param k 选出来多少人
      * @param voteIsLegal   是否合法

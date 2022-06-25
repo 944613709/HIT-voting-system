@@ -22,8 +22,8 @@ class PollTest {
 	//	投票人vr1，对candidate1-support，对candidate2-oppose，对candidate3-support
 	//	投票人vr2，对candidate1-Oppose，对candidate2-Waive，对candidate3-Waive
 	//
-	//	 测试poll.create
-	//	  以Election为实现类
+//	测试poll.create
+//	  以GeneralPollImpl为实现类
 //
 //	  测试setInfo
 //	  测试设定之后的name, date, voteType, quantity
@@ -64,7 +64,7 @@ class PollTest {
 //	 测试result
 //	  测试策略对比result得到的String形式
 //
-//	 * 测试accept方法
+//	 * 测试accept方法,访问者Visitor模式
 //	 *1.全部合法
 //	  2.部分合法
 //	 */
@@ -82,7 +82,7 @@ class PollTest {
 	@Test
 	void createTest() {
 		Poll<Person> poll = Poll.create();
-		Election election = new Election();
+		GeneralPollImpl<Person> election = new GeneralPollImpl<Person>();
 		assertEquals(election, poll);
 		;
 	}
@@ -140,8 +140,8 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -209,8 +209,7 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -269,8 +268,7 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -326,8 +324,7 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -388,8 +385,7 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -478,7 +474,7 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> poll = Poll.create();
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -493,7 +489,7 @@ class PollTest {
 		poll.addVote(rv2, vr2);
 		poll.addVote(rv3, vr3);
 		poll.addVote(rv4, vr4);
-		Election election = (Election) poll;
+		GeneralPollImpl election =  poll;
 		Map<Vote<Person>, Boolean> voteIsLegal = election.getVoteIsLegal();
 		for (Map.Entry<Vote<Person>, Boolean> voteBooleanEntry : voteIsLegal.entrySet()) {
 			Boolean isLegal = voteBooleanEntry.getValue();
@@ -549,8 +545,7 @@ class PollTest {
 		Vote<Person> rv1 = new Vote<Person>(voteItems1, new GregorianCalendar(2019, 6, 14, 16, 15, 30));
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -614,8 +609,7 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -688,8 +682,7 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -770,8 +763,7 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -851,8 +843,7 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);
@@ -936,8 +927,7 @@ class PollTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		GeneralPollImpl<Person> poll= new GeneralPollImpl<Person>();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);

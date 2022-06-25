@@ -8,9 +8,7 @@ import java.util.Map;
 
 public class BusinessSelectionStrategy<Proposal> implements SelectionStrategy<Proposal>{
     /**
-     * 选择排名前?的菜，若因为有多道菜得分相等而无法自然排出前
-     * ?名，则除了那些明确可进入前?名的菜之外，在其他得分相等的菜中随
-     * 机选取一部分，凑足?个菜。
+     * 获得（加权求和之后的）支持票总数，超过（无需考虑加权分配）合法选票个数的2/3，即表示表决通过
      * @param statistics
      * @param quantity
      * @param voteIsLegal

@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class BusinessVotingStatisticsStrategy<Proposal> implements StatisticsStrategy<Proposal> {
     /**
-     * 统计每个菜品的总得分（加权求和）；
+     * 统计获得支持票的数量（加权求和）；
      * @param votes
      * @param voteType
      * @param votersVoteFrequencies

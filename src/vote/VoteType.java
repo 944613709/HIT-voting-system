@@ -20,7 +20,8 @@ public class VoteType {
 	// 用Collections.unmodifiableMap()转化为不可变类型返回给外部
 
 	/**
-	 * String不能为""，不能为null
+	 * String不能为""，其中不允许出现空格
+	 * options.size()选项个数需要>=2
 	 * @return
 	 */
 	private void checkRep() {
@@ -33,9 +34,8 @@ public class VoteType {
 	}
 
 	/**
-	 * 创建一个投票类型对象
-	 * 
-	 * 可以自行设计该方法所采用的参数
+	 *
+	 * @param options voteType对应的选项名和分数
 	 */
 	public VoteType(Map<String,Integer> options) {
 		this.options=new HashMap<>(options);
@@ -150,7 +150,7 @@ public class VoteType {
 	}
 
 	/**
-	 * 自行添加,返回options
+	 * 返回options
 	 * @return	options不可变类型
 	 */
 	public Map<String, Integer> getOptions() {

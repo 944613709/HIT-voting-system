@@ -19,7 +19,7 @@ public interface Poll<C> {
 	 * @return 一个Poll<C>对象
 	 */
 	public static <C> Poll<C> create() {
-		return (Poll<C>) new Election();
+		return new GeneralPollImpl<C>();
 
 	}
 

@@ -32,7 +32,7 @@ public class Vote<C> {
 	/**
 	 * 创建一个选票对象
 	 * 
-	 * 自己编写函数
+	 *
 	 * @param Set<VoteItem<C>> voteItems	所有候选对象的投票项
 	 * @param date    投票时间
 	 */
@@ -43,6 +43,7 @@ public class Vote<C> {
 	}
 
 	/**
+	 * 无参数构造函数
 	 * （用于后续的设计模式的构造函数）
 	 */
 	public Vote() {

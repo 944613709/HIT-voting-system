@@ -16,18 +16,22 @@ import vote.VoteType;
 
 public class ElectionApp {
 	/**
-	 * 	 * 选择排名前2的候选人
-	 * 	 * 候选人candidate1，candidate2，candidate3
-	 * 	 * 投票人vr1，对candidate1-support，对candidate2-oppose，对candidate3-support
-	 * 	 * 投票人vr2，对candidate1-Oppose，对candidate2-Waive，对candidate3-Waive
+	 * 	 * 选择排名前2的候选对象
+	 * 	 * 候选对象candidate1，candidate2，candidate3
+	 * 	 * 投票对象vr1，对candidate1-support，对candidate2-oppose，对candidate3-support
+	 * 	 * 投票对象vr2，对candidate1-Oppose，对candidate2-Waive，对candidate3-Waive
+	 * 	 计票结果candidate1=1.0, candidate3=1.0
+	 * 	 遴选结果
+	 * 	 候选对象:candidate1 排名:1
+	 * 候选对象:candidate3 排名:2
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// 创建2个投票人
+		// 创建2个投票对象
 		Voter vr1 = new Voter("v1");
 		Voter vr2 = new Voter("v2");
 
-		// 设定2个投票人的权重
+		// 设定2个投票对象的权重
 		Map<Voter, Double> weightedVoters = new HashMap<>();
 		weightedVoters.put(vr1, 1.0);
 		weightedVoters.put(vr2, 1.0);
@@ -39,7 +43,7 @@ public class ElectionApp {
 		types.put("Waive", 0);
 		VoteType voteType = new VoteType(types);
 
-		// 创建候选对象：候选人
+		// 创建候选对象：候选对象
 		Person p1 = new Person("candidate1", 19);
 		Person p2 = new Person("candidate2", 20);
 		Person p3 = new Person("candidate3", 21);
@@ -47,7 +51,7 @@ public class ElectionApp {
 		candidates.add(p1);
 		candidates.add(p2);
 		candidates.add(p3);
-		// 创建投票项，前三个是投票人vr1对三个候选对象的投票项，后三个是vr2的投票项
+		// 创建投票项，前三个是投票对象vr1对三个候选对象的投票项，后三个是vr2的投票项
 		VoteItem<Person> vi11 = new VoteItem<>(p1, "Support");
 		VoteItem<Person> vi12 = new VoteItem<>(p2, "Oppose");
 		VoteItem<Person> vi13 = new VoteItem<>(p3, "Support");
@@ -64,7 +68,7 @@ public class ElectionApp {
 		voteItems2.add(vi22);
 		voteItems2.add(vi23);
 
-		// 创建2个投票人vr1、vr2的选票
+		// 创建2个投票对象vr1、vr2的选票
 		Vote<Person> rv1 = new Vote<Person>(voteItems1, new GregorianCalendar(2019, 6, 14, 16, 15, 30));
 		Vote<Person> rv2 = new Vote<Person>(voteItems2, new GregorianCalendar(2019, 6, 14, 16, 15, 30));
 //		System.out.println("rv1 = " + rv1);
@@ -77,10 +81,10 @@ public class ElectionApp {
 		int quantity = 2;
 		poll.setInfo(name, date, voteType, quantity);
 
-		// 增加投票人及其权重
+		// 增加投票对象及其权重
 		poll.addVoters(weightedVoters);
 		poll.addCandidates(candidates);
-		// 增加三个投票人的选票
+		// 增加三个投票对象的选票
 		poll.addVote(rv1, vr1);
 		poll.addVote(rv2, vr2);
 //		System.out.println("poll = " + poll.getVotes());
@@ -100,8 +104,8 @@ public class ElectionApp {
 		System.out.println("本次投票具体信息" +poll);
 		System.out.println("统计获得支持票的数量,输出计票结果");
 		System.out.println(poll.getStatistics());
-		System.out.println("选择排名前k的候选人，若有多个候选人的支持票数量相等而无" +
-				"法自然排出前k名，则仅有那些明确可进入前k名的人当选");
+		System.out.println("选择排名前k的候选对象，若有多个候选对象的支持票数量相等而无" +
+				"法自然排出前k名，则仅有那些明确可进入前k名的对象当选");
 		System.out.println(poll.result());
 
 

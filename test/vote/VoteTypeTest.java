@@ -13,7 +13,6 @@ import java.util.Map;
 class VoteTypeTest {
 
 	// test strategy:
-
 //	  针对VoteType(Map<String,Integer> options)
 //	  1.不存在投票选项
 //	  2.存在投票选项

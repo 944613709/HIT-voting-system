@@ -17,7 +17,29 @@ class ElectionTest {
 
 	// test strategy
 	//针对Election特殊情况测试
-	// TODO
+//	 * 总体正常测试情况1
+//	 * 可以直接选择排名前k的候选人
+
+//	   总体异常测试情况2
+//	 * 当若有多个候选人的支持票数量相等而无法自然排出前k名
+
+//
+//	  Election要求k<=m
+//	  测试k（quantity）>m(candidates.size)的报错情况
+
+//	  测试statistics方法
+//	 * 分为正常情况
+//	 * 异常情况1：还有人没有投票无法计票
+//	 * 异常情况2：四种不合法投票（在checkVoteTest以测试）
+
+//	  不合法选票的测试(包括额外的测试)
+//	 * 针对Election的额外不合法情况：支持票数量超过最大数量
+
+//	  测试selection
+//	 * 测试策略对比selection得到的result
+//	 * 1，测试一般情况，可以直接选择排名前k的候选人
+//	 * 2.当若有多个候选人的支持票数量相等而无法自然排出前k名
+
 
 	/**
 	 * 总体正常测试情况1
@@ -100,8 +122,7 @@ class ElectionTest {
 		// 按规则遴选
 		ElectionSelectionStrategy<Person> electionSelectionStrategy = new ElectionSelectionStrategy<>();
 		poll.selection(electionSelectionStrategy);
-		// 输出遴选结果
-		System.out.println(poll.result());
+
 
 
 	}
@@ -188,8 +209,6 @@ class ElectionTest {
 		// 按规则遴选
 		ElectionSelectionStrategy<Person> electionSelectionStrategy = new ElectionSelectionStrategy<>();
 		poll.selection(electionSelectionStrategy);
-		// 输出遴选结果
-		System.out.println(poll.result());
 	}
 
 	/**
@@ -582,8 +601,7 @@ class ElectionTest {
 //		System.out.println("rv1 = " + rv1);
 //		System.out.println("rv2 = " + rv2);
 		// 创建投票活动
-		Poll<Person> originPoll = Poll.create();
-		Election poll = (Election) originPoll;
+		Election poll = new Election();
 		// 设定投票基本信息：名称、日期、投票类型、选出的数量
 		String name = "代表选举";
 		GregorianCalendar date = new GregorianCalendar(2019, 6, 14, 16, 15, 30);

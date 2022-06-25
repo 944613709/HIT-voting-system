@@ -14,6 +14,15 @@ import java.util.Set;
  * @param <C>
  */
 public interface StatisticsStrategy<C> {
+    /**
+     *
+     * @param votes
+     * @param voteType
+     * @param votersVoteFrequencies
+     * @param voteIsLegal
+     * @param voters
+     * @return
+     */
     Map<C, Double> statistics(Set<Vote<C>> votes, VoteType voteType,Map<Voter,Integer> votersVoteFrequencies,Map<Vote<C>,Boolean> voteIsLegal,Map<Voter, Double> voters);
 
 }

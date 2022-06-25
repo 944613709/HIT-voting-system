@@ -19,7 +19,15 @@ import java.util.*;
 class DinnerOrderTest {
 
 	// test strategy
-	// TODO
+//	 * 针对实名投票：
+//	 * 对于实名投票测试多次投票后非法的情况
+//	 * statistics测试
+//	 * 1.权重相同
+//	 * 2.权重不相同
+//	 * selection遴选测试
+//	 * 1.都可以明确进入前k名
+//	 * 2.有部分不可以明确进入
+
 
 	/**
 	 * 针对实名投票：

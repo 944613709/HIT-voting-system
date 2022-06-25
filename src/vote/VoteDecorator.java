@@ -7,4 +7,11 @@ public abstract class VoteDecorator<C>implements VoteInterface<C>{
         this.vote = vote;
     }
 
+    /**
+     * //仅举例子，代表是Vote本该具有的方法
+     */
+    @Override
+    public void voteFunction() {
+        //仅举例子，代表是Vote本该具有的方法
+    }
 }
