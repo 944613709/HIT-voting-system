@@ -546,8 +546,7 @@ class ElectionTest {
 	/**
 	 * 测试selection
 	 * 测试策略对比selection得到的result
-	 * 1，测试一般情况
-	 * * 选择排名前?的候选人
+	 * 1，测试一般情况可以明确选择排名前k的候选人
 	 * * 候选人candidate1，candidate2，candidate3
 	 * * 投票人vr1，对candidate1-support，对candidate2-oppose，对candidate3-support
 	 * * 投票人vr2，对candidate1-Oppose，对candidate2-Waive，对candidate3-Waive
@@ -634,7 +633,7 @@ class ElectionTest {
 
 	/**
 	 * 测试selection
-	 * 当若有多个候选人的支持票数量相等而无法自然排出前?名
+	 * 2.当若有多个候选人的支持票数量相等而无法自然排出前?名
 	 * k=2，应该result只有candidate1
 	 * 投票人给candidate1 支持票2
 	 * candidate2 支持票1

@@ -407,7 +407,7 @@ class PollTest {
 	 * * ? 一张选票中包含了不在本次投票活动中的候选人
 	 * * ? 一张选票中出现了本次投票不允许的选项值
 	 * * ? 一张选票中有对同一个候选对象的多次投票
-	 * <p>
+	 * 具体测试样例:
 	 * 候选人candidate1.candidate2
 	 * 投票人vr1,选票里有candidate1
 	 * 投票人vr2,选票里有candidate1,candidate3
