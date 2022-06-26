@@ -47,7 +47,7 @@ public class ElectionSelectionStrategy<Person> implements SelectionStrategy<Pers
         {
             peopleWillDelete.add(res.get(k-1).getKey());
             int i=1;
-            while(k-1-i>0 && res.get(k-1-i).getValue()==res.get(k-1).getKey())//若前者
+            while(k-1-i>0 && Objects.equals(res.get(k - 1 - i).getValue(), res.get(k - 1).getValue()))//若前者
             {
             peopleWillDelete.add(res.get(k-1-i).getKey());
             i++;
